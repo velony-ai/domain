@@ -8,7 +8,7 @@ export abstract class PrimitiveValueObject<
   private readonly [PRIMITIVE_VO_BRAND]: void;
 
   public equals(other: this): boolean {
-    return this._value === other.value;
+    return this._value === other._value;
   }
 
   public toString(): string {
