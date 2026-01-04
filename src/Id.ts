@@ -2,6 +2,14 @@ import { PrimitiveValueObject } from './primitive-value-object.js';
 
 declare const ID_BRAND: unique symbol;
 
+/**
+ * Abstract base class for entity identifiers.
+ * Represents a unique identifier for domain entities, ensuring type safety
+ * and proper value object semantics for IDs.
+ *
+ * @template T - The primitive type of the identifier (string or number)
+ * @extends PrimitiveValueObject
+ */
 export abstract class Id<
   T extends string | number,
 > extends PrimitiveValueObject<T> {
