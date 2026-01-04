@@ -1,5 +1,5 @@
 {
-  "name": "@velony-ai/domain",
+  "name": "@velony/domain",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/velony-ai/domain.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "author": "velony-ai",
   "license": "MIT",
