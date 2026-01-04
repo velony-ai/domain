@@ -1,4 +1,4 @@
-import { PrimitiveValueObject } from './primitive-value-object';
+import { PrimitiveValueObject } from './primitive-value-object.js';
 
 declare const ID_BRAND: unique symbol;
 

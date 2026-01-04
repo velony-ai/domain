@@ -1,6 +1,6 @@
 import { DomainEvent } from './domain-event';
 import { Entity } from './entity';
-import { Id } from './Id';
+import { Id } from './id';
 
 declare const AGGREGATE_ROOT_BRAND: unique symbol;
 

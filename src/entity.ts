@@ -1,4 +1,4 @@
-import { Id } from './Id';
+import { Id } from './id';
 
 declare const ENTITY_BRAND: unique symbol;
 
