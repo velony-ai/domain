@@ -17,7 +17,7 @@ export abstract class AggregateRoot<
     return events;
   }
 
-  protected addDomainEvent(event: DomainEvent<any>): void {
+  protected pushDomainEvent(event: DomainEvent<any>): void {
     this._domainEvents.push(event);
   }
 }
