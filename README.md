@@ -121,7 +121,7 @@ class OrderId extends Id<string> {
 }
 
 class OrderPlacedEvent extends DomainEvent<{ total: number }> {
-  static readonly type = 'order.placed';
+  public readonly type = 'order.placed';
 
   constructor(aggregateId: string, total: number) {
     super(aggregateId, { total });
@@ -161,7 +161,7 @@ interface UserRegisteredPayload {
 }
 
 class UserRegisteredEvent extends DomainEvent<UserRegisteredPayload> {
-  static readonly type = 'user.registered';
+  public readonly type = 'user.registered';
 
   constructor(aggregateId: string, email: string, name: string) {
     super(aggregateId, { email, name });
@@ -214,15 +214,15 @@ StoragePath.create('files//data'); // Error: Storage path contains invalid doubl
 
 ### `AggregateRoot<TIdentifier>`
 - Extends `Entity<TIdentifier>`
-- `pullDomainEvents(): DomainEvent<any>[]` - Retrieve and clear events
-- `pushDomainEvent(event: DomainEvent<any>): void` - Add event (protected)
+- `pullDomainEvents(): DomainEvent<any, any>[]` - Retrieve and clear events
+- `pushDomainEvent(event: DomainEvent<any, any>): void` - Add event (protected)
 
 ### `DomainEvent<TPayload>`
 - `id: string` - Unique event ID (UUIDv7)
 - `aggregateId: string` - ID of the aggregate that produced the event
 - `payload: TPayload` - Event-specific data
 - `occurredAt: Date` - Timestamp of occurrence
-- `type: string` - Event type identifier
+- `type: string` - Event type identifier (abstract, must be implemented)
 
 ## License
 

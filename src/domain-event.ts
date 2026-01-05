@@ -9,14 +9,14 @@ export declare const DOMAIN_EVENT_BRAND: unique symbol;
  *
  * @template TPayload - The type of the event payload containing event-specific data
  */
-export abstract class DomainEvent<TPayload> {
+export abstract class DomainEvent<TAggregateIdentity, TPayload> {
   private readonly [DOMAIN_EVENT_BRAND]: void;
 
   /**
-   * Static type identifier for the event class.
-   * Should be overridden in concrete event classes.
+   * Type identifier for the event.
+   * Must be implemented in concrete event classes to provide a unique event type string.
    */
-  public static readonly type: string;
+  public abstract readonly type: string;
 
   /**
    * Unique identifier for this event instance (UUIDv7).
@@ -28,7 +28,7 @@ export abstract class DomainEvent<TPayload> {
    * The identifier of the aggregate that produced this event.
    * @readonly
    */
-  public readonly aggregateId: string;
+  public readonly aggregateId: TAggregateIdentity;
 
   /**
    * The data payload specific to this event.
@@ -49,19 +49,10 @@ export abstract class DomainEvent<TPayload> {
    * @param payload - The event-specific data
    * @protected
    */
-  protected constructor(aggregateId: string, payload: TPayload) {
+  protected constructor(aggregateId: TAggregateIdentity, payload: TPayload) {
     this.id = uuidv7();
     this.aggregateId = aggregateId;
     this.occurredAt = new Date();
     this.payload = payload;
-  }
-
-  /**
-   * Gets the type identifier for this event.
-   *
-   * @returns The event type string from the static type property
-   */
-  public get type(): string {
-    return (this.constructor as typeof DomainEvent<TPayload>).type;
   }
 }

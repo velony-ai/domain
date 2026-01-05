@@ -22,7 +22,7 @@ export abstract class AggregateRoot<
    * Collection of domain events that have occurred within this aggregate.
    * @private
    */
-  private _domainEvents: DomainEvent<any>[] = [];
+  private _domainEvents: DomainEvent<any, any>[] = [];
 
   /**
    * Retrieves and clears all pending domain events from the aggregate.
@@ -31,7 +31,7 @@ export abstract class AggregateRoot<
    *
    * @returns An array of domain events that occurred within the aggregate
    */
-  public pullDomainEvents(): DomainEvent<any>[] {
+  public pullDomainEvents(): DomainEvent<any, any>[] {
     const events = [...this._domainEvents];
     this._domainEvents = [];
     return events;
@@ -44,7 +44,7 @@ export abstract class AggregateRoot<
    * @param event - The domain event to add
    * @protected
    */
-  protected pushDomainEvent(event: DomainEvent<any>): void {
+  protected pushDomainEvent(event: DomainEvent<any, any>): void {
     this._domainEvents.push(event);
   }
 }
