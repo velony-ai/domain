@@ -8,13 +8,6 @@ A TypeScript library providing core building blocks for Domain-Driven Design (DD
 npm install @velony/domain
 ```
 
-## Features
-
-- **Type-safe** - Full TypeScript support with comprehensive type definitions
-- **DDD Patterns** - Implementations of core DDD tactical patterns
-- **Immutable** - Value objects and events are immutable by design
-- **Minimal dependencies** - Only depends on `uuid` for event ID generation
-
 ## Core Concepts
 
 ### Entity
@@ -112,7 +105,7 @@ console.log(age.toString()); // "25"
 The entry point to an aggregate that maintains consistency boundaries and manages domain events.
 
 ```typescript
-import { AggregateRoot, Id, DomainEvent } from '@velony/domain';
+import { AggregateRoot, Id, DomainEvent, DomainEventRegistry } from '@velony/domain';
 
 class OrderId extends Id<string> {
   static create(value: string): OrderId {
@@ -120,11 +113,19 @@ class OrderId extends Id<string> {
   }
 }
 
-class OrderPlacedEvent extends DomainEvent<{ total: number }> {
-  public readonly type = 'order.placed';
+// Register the event type in the registry
+declare module '@velony/domain' {
+  interface DomainEventRegistry {
+    'order.placed': {
+      aggregateId: OrderId;
+      payload: { total: number };
+    };
+  }
+}
 
-  constructor(aggregateId: string, total: number) {
-    super(aggregateId, { total });
+class OrderPlacedEvent extends DomainEvent<'order.placed'> {
+  constructor(aggregateId: OrderId, total: number) {
+    super('order.placed', aggregateId, { total });
   }
 }
 
@@ -138,7 +139,7 @@ class Order extends AggregateRoot<OrderId> {
 
   place(): void {
     this.pushDomainEvent(
-      new OrderPlacedEvent(this.id.toString(), this.total)
+      new OrderPlacedEvent(this.id, this.total)
     );
   }
 }
@@ -150,28 +151,42 @@ const events = order.pullDomainEvents();
 
 ### Domain Event
 
-Represents something significant that happened in the domain.
+Represents something significant that happened in the domain. Events use a type-safe registry pattern for compile-time validation.
 
 ```typescript
-import { DomainEvent } from '@velony/domain';
+import { DomainEvent, DomainEventRegistry, Id } from '@velony/domain';
 
-interface UserRegisteredPayload {
-  email: string;
-  name: string;
-}
-
-class UserRegisteredEvent extends DomainEvent<UserRegisteredPayload> {
-  public readonly type = 'user.registered';
-
-  constructor(aggregateId: string, email: string, name: string) {
-    super(aggregateId, { email, name });
+class UserId extends Id<string> {
+  static create(value: string): UserId {
+    return new UserId(value);
   }
 }
 
-const event = new UserRegisteredEvent('user-123', 'john@example.com', 'John Doe');
+// Register event types in the DomainEventRegistry
+declare module '@velony/domain' {
+  interface DomainEventRegistry {
+    'user.registered': {
+      aggregateId: UserId;
+      payload: {
+        email: string;
+        name: string;
+      };
+    };
+  }
+}
+
+class UserRegisteredEvent extends DomainEvent<'user.registered'> {
+  constructor(aggregateId: UserId, email: string, name: string) {
+    super('user.registered', aggregateId, { email, name });
+  }
+}
+
+const userId = UserId.create('user-123');
+const event = new UserRegisteredEvent(userId, 'john@example.com', 'John Doe');
 console.log(event.id); // UUIDv7
 console.log(event.type); // "user.registered"
 console.log(event.occurredAt); // Date
+console.log(event.aggregateId); // UserId instance
 console.log(event.payload); // { email: "john@example.com", name: "John Doe" }
 ```
 
@@ -214,15 +229,29 @@ StoragePath.create('files//data'); // Error: Storage path contains invalid doubl
 
 ### `AggregateRoot<TIdentifier>`
 - Extends `Entity<TIdentifier>`
-- `pullDomainEvents(): DomainEvent<any, any>[]` - Retrieve and clear events
-- `pushDomainEvent(event: DomainEvent<any, any>): void` - Add event (protected)
+- `pullDomainEvents(): AnyDomainEvent[]` - Retrieve and clear events
+- `pushDomainEvent(event: AnyDomainEvent): void` - Add event (protected)
 
-### `DomainEvent<TPayload>`
+### `DomainEvent<TType>`
 - `id: string` - Unique event ID (UUIDv7)
-- `aggregateId: string` - ID of the aggregate that produced the event
-- `payload: TPayload` - Event-specific data
+- `type: TType` - Type identifier for the event (must be registered in DomainEventRegistry)
+- `aggregateId: DomainEventRegistry[TType]['aggregateId']` - ID of the aggregate that produced the event
+- `payload: DomainEventRegistry[TType]['payload']` - Event-specific data
 - `occurredAt: Date` - Timestamp of occurrence
-- `type: string` - Event type identifier (abstract, must be implemented)
+
+### `DomainEventRegistry`
+Interface for registering event types with their aggregate ID and payload types. Extend this interface using module augmentation to register new event types:
+
+```typescript
+declare module '@velony/domain' {
+  interface DomainEventRegistry {
+    'your.event.type': {
+      aggregateId: YourAggregateId;
+      payload: YourPayloadType;
+    };
+  }
+}
+```
 
 ## License
 
