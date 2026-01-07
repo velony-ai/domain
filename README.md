@@ -225,7 +225,7 @@ StoragePath.create('files//data'); // Error: Storage path contains invalid doubl
 ### `AggregateRoot<TIdentifier>`
 - Extends `Entity<TIdentifier>`
 - `pullDomainEvents(): AnyDomainEvent[]` - Retrieve and clear events
-- `pushDomainEvent(event: AnyDomainEvent): void` - Add event (protected)
+- `pushDomainEvent(event: AnyDomainEvent): void` - Add event (public)
 
 ### `DomainEvent<TType>`
 - `id: string` - Unique event ID (UUIDv7)

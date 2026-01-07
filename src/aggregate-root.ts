@@ -39,12 +39,12 @@ export abstract class AggregateRoot<
 
   /**
    * Adds a domain event to the aggregate's event collection.
-   * Protected to allow only the aggregate itself to record events.
+   * Public to allow external code to record events on the aggregate.
    *
    * @param event - The domain event to add
-   * @protected
+   * @public
    */
-  protected pushDomainEvent(event: AnyDomainEvent): void {
+  public pushDomainEvent(event: AnyDomainEvent): void {
     this._domainEvents.push(event);
   }
 }
