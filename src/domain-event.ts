@@ -59,9 +59,9 @@ export abstract class DomainEvent<TType extends keyof DomainEventRegistry> {
    * @param type - The event type identifier
    * @param aggregateId - The ID of the aggregate that produced this event
    * @param payload - The event-specific data
-   * @protected
+   * @public
    */
-  protected constructor(
+  public constructor(
     type: TType,
     aggregateId: DomainEventRegistry[TType]['aggregateId'],
     payload: DomainEventRegistry[TType]['payload'],

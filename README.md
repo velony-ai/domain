@@ -123,11 +123,7 @@ declare module '@velony/domain' {
   }
 }
 
-class OrderPlacedEvent extends DomainEvent<'order.placed'> {
-  constructor(aggregateId: OrderId, total: number) {
-    super('order.placed', aggregateId, { total });
-  }
-}
+class OrderPlacedEvent extends DomainEvent<'order.placed'> {}
 
 class Order extends AggregateRoot<OrderId> {
   constructor(
@@ -139,7 +135,7 @@ class Order extends AggregateRoot<OrderId> {
 
   place(): void {
     this.pushDomainEvent(
-      new OrderPlacedEvent(this.id, this.total)
+      new OrderPlacedEvent('order.placed', this.id, { total: this.total })
     );
   }
 }
@@ -175,14 +171,13 @@ declare module '@velony/domain' {
   }
 }
 
-class UserRegisteredEvent extends DomainEvent<'user.registered'> {
-  constructor(aggregateId: UserId, email: string, name: string) {
-    super('user.registered', aggregateId, { email, name });
-  }
-}
+class UserRegisteredEvent extends DomainEvent<'user.registered'> {}
 
 const userId = UserId.create('user-123');
-const event = new UserRegisteredEvent(userId, 'john@example.com', 'John Doe');
+const event = new UserRegisteredEvent('user.registered', userId, {
+  email: 'john@example.com',
+  name: 'John Doe'
+});
 console.log(event.id); // UUIDv7
 console.log(event.type); // "user.registered"
 console.log(event.occurredAt); // Date
