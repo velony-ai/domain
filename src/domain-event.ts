@@ -1,7 +1,7 @@
 import { v7 as uuidv7 } from 'uuid';
 import { Id } from './id';
 
-declare const DOMAIN_EVENT_BRAND: unique symbol;
+const DOMAIN_EVENT_BRAND = Symbol('DomainEvent');
 
 /**
  * Registry that maps event types to their aggregate and payload types.

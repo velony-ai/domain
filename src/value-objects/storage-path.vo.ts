@@ -1,6 +1,6 @@
 import { PrimitiveValueObject } from '../primitive-value-object';
 
-declare const STORAGE_PATH_VO_BRAND: unique symbol;
+const STORAGE_PATH_VO_BRAND = Symbol('StoragePath');
 
 /**
  * Value object representing a storage path with validation.

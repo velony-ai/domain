@@ -1,6 +1,6 @@
 import { ValueObject } from './value-object';
 
-declare const PRIMITIVE_VO_BRAND: unique symbol;
+const PRIMITIVE_VO_BRAND = Symbol('PrimitiveValueObject');
 
 /**
  * Abstract base class for value objects wrapping primitive values.

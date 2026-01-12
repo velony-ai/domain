@@ -2,7 +2,7 @@ import { type AnyDomainEvent } from './domain-event';
 import { Entity } from './entity';
 import { Id } from './id';
 
-declare const AGGREGATE_ROOT_BRAND: unique symbol;
+const AGGREGATE_ROOT_BRAND = Symbol('AggregateRoot');
 
 /**
  * Abstract base class for aggregate roots in Domain-Driven Design.

@@ -1,4 +1,4 @@
-declare const VO_BRAND: unique symbol;
+const VO_BRAND = Symbol('ValueObject');
 
 /**
  * Abstract base class for value objects in Domain-Driven Design.

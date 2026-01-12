@@ -1,6 +1,6 @@
 import { PrimitiveValueObject } from './primitive-value-object.js';
 
-declare const ID_BRAND: unique symbol;
+const ID_BRAND = Symbol('Id');
 
 /**
  * Abstract base class for entity identifiers.

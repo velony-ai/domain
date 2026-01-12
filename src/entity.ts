@@ -1,6 +1,6 @@
 import { Id } from './id';
 
-declare const ENTITY_BRAND: unique symbol;
+const ENTITY_BRAND = Symbol('Entity');
 
 /**
  * Abstract base class for entities in Domain-Driven Design.
