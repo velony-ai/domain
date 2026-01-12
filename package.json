@@ -1,6 +1,6 @@
 {
   "name": "@velony/domain",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "TypeScript library providing core building blocks for Domain-Driven Design (DDD) applications",
   "keywords": [
     "ddd",
@@ -19,7 +19,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     }
   },
   "files": [
